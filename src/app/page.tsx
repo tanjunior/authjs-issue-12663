@@ -3,6 +3,7 @@ import Link from "next/link";
 import styles from "./index.module.css";
 import SignInGithub from "~/components/SignInGithub";
 import { auth } from "~/server/auth";
+import SignOut from "~/components/SignOut";
 
 export default async function Home() {
   const session = await auth();
@@ -10,7 +11,10 @@ export default async function Home() {
     <main className={styles.main}>
       <div className={styles.container}>
         {session ? (
-          <span className={styles.showcaseText}>{session.user.name}</span>
+          <>
+            <span className={styles.showcaseText}>{session.user.name}</span>
+            <SignOut />
+          </>
         ) : (
           <>
             <Link href={"/api/auth/signin"} className={styles.loginButton}>
