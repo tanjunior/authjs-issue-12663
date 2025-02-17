@@ -2,13 +2,23 @@ import Link from "next/link";
 
 import styles from "./index.module.css";
 import SignInGithub from "~/components/SignInGithub";
+import { auth } from "~/server/auth";
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
   return (
     <main className={styles.main}>
       <div className={styles.container}>
-        <Link href={"/api/auth/signin"}>Sign in</Link>
-        <SignInGithub />
+        {session ? (
+          <span className={styles.showcaseText}>{session.user.name}</span>
+        ) : (
+          <>
+            <Link href={"/api/auth/signin"} className={styles.loginButton}>
+              Default Sign in
+            </Link>
+            <SignInGithub />
+          </>
+        )}
         <h1 className={styles.title}>
           Create <span className={styles.pinkSpan}>T3</span> App
         </h1>
